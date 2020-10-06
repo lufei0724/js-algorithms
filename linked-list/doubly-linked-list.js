@@ -1,6 +1,7 @@
 class LinkedListNode {
-  constructor (value, next = null) {
+  constructor (value, pre = null, next = null) {
     this.value = value
+    this.pre = pre
     this.next = next
   }
 }
@@ -11,16 +12,6 @@ class LinkedList {
     this.tail = null
   }
 
-  prepend (value) {
-    const newNode = new LinkedListNode(value, this.head)
-    this.head = newNode
-
-    if (!this.tail) {
-      this.tail = newNode
-    }
-    return this
-  }
-
   append (value) {
     const newNode = new LinkedListNode(value)
     if (!this.head) {
@@ -28,34 +19,46 @@ class LinkedList {
       this.tail = newNode
       return this
     }
-
-    this.tail.next = newNode // Current tail
-    this.tail = newNode // New tail
+    this.tail.next = newNode
+    newNode.pre = this.tail
+    this.tail = newNode
     return this
   }
 
-  delete (value) {
+  prepend (value) {
+    const newNode = new LinkedListNode(value)
+    if (this.head) {
+      this.head.pre = newNode
+    }
+    this.head = newNode
+    if (!this.tail) {
+      this.tail = newNode
+    }
+    newNode.next = this.head
+    return this
+  }
+
+  remove (value) {
     if (!this.head) {
       return false
     }
-    let node = this.head
-    if (node.value === value) {
+    if (this.head.value === value) {
       if (this.head === this.tail) {
         this.head = null
         this.tail = null
       } else {
         this.head = this.head.next
+        this.head.pre = null
       }
       return true
     }
-    while (!node.next && node.next.value !== value) {
+    let node = this.head.next
+    while (!node && node.value !== value) {
       node = node.next
     }
-    if (node.next) {
-      if (node.next === this.tail) {
-        this.tail = node
-      }
-      node.next = node.next.next
+    if (node) {
+      node.next.pre = node.prev
+      node.pre.next = node.next
       return true
     }
     return false
