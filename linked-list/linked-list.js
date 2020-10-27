@@ -3,6 +3,10 @@ class LinkedListNode {
     this.value = value
     this.next = next
   }
+
+  toString (callback) {
+    return callback ? callback(this.value) : `${this.value}`
+  }
 }
 
 class LinkedList {
@@ -34,32 +38,129 @@ class LinkedList {
     return this
   }
 
-  delete (value) {
-    if (!this.head) {
-      return false
-    }
+  find (callback) {
     let node = this.head
-    if (node.value === value) {
-      if (this.head === this.tail) {
-        this.head = null
-        this.tail = null
-      } else {
-        this.head = this.head.next
-      }
-      return true
+    if (!callback) {
+      return null
     }
-    while (!node.next && node.next.value !== value) {
+
+    while (node) {
+      if (callback(node.value)) {
+        return node
+      }
       node = node.next
     }
-    if (node.next) {
-      if (node.next === this.tail) {
-        this.tail = node
-      }
-      node.next = node.next.next
-      return true
+
+    return null
+  }
+
+  delete (value) {
+    if (!this.head) {
+      return null
     }
-    return false
+
+    let deletedNode = null
+
+    while (this.head && this.head.value === value) {
+      deletedNode = this.head
+      this.head = this.head.next
+    }
+
+    let currentNode = this.head
+    if (currentNode !== null) {
+      while (currentNode.next) {
+        if (currentNode.next.value === value) {
+          deletedNode = currentNode.next
+          currentNode.next = currentNode.next.next
+        } else {
+          currentNode = currentNode.next
+        }
+      }
+    }
+
+    if (this.tail.value === value) {
+      this.tail = currentNode
+    }
+
+    return deletedNode
+  }
+
+  deleteTail () {
+    if (!this.head) {
+      return null
+    }
+
+    let deletedNode = null
+    let node = this.head
+    if (!node.next) {
+      deletedNode = this.head
+      this.head = null
+      this.tail = null
+      return deletedNode
+    }
+
+    while (node.next !== this.tail) {
+      node = node.next
+    }
+    deletedNode = this.tail
+    node.next = null
+    this.tail = node
+
+    return deletedNode
+  }
+
+  deleteHead () {
+    if (!this.head) {
+      return null
+    }
+    let deletedNode = null
+    const node = this.head
+    if (!node.next) {
+      this.head = null
+      this.tail = null
+    } else {
+      this.head = node.next
+    }
+    deletedNode = node
+    return deletedNode
+  }
+
+  reverse () {
+    if (!this.head) {
+      this.head = null
+      this.tail = null
+      return
+    }
+
+    let prevNode = null
+    let node = this.head
+    let nextNode = node
+    this.tail = node
+    while (node.next) {
+      nextNode = node.next
+      node.next = prevNode
+      prevNode = node
+      node = nextNode
+    }
+    node.next = prevNode
+    this.head = node
+  }
+
+  toArray () {
+    const nodes = []
+
+    let currentNode = this.head
+    while (currentNode) {
+      nodes.push(currentNode)
+      currentNode = currentNode.next
+    }
+
+    return nodes
+  }
+
+  toString (callback) {
+    return this.toArray().map(node => node.toString(callback)).toString()
   }
 }
 
-export default LinkedList
+module.exports = LinkedList
