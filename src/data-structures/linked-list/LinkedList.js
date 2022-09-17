@@ -107,4 +107,23 @@ export default class LinkedList {
     }
     return this;
   }
+
+  /**
+ * @param {Function} [callback]
+ * @return {LinkedListNode}
+ */
+  find(callback) {
+    if (!this.head) {
+      return null;
+    }
+
+    let node = this.head;
+    while (node) {
+      if (callback && callback(node.value)) {
+        return node;
+      }
+      node = node.next;
+    }
+    return null;
+  }
 }
