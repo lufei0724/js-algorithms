@@ -59,20 +59,20 @@ describe('LinkedList', () => {
       expect(linkedList.toString()).toBe('1');
 
       linkedList.deleteHead();
-      expect(linkedList.head.toString()).toBe('');
-      expect(linkedList.tail.toString()).toBe('');
+      expect(linkedList.head).toBeNull();
+      expect(linkedList.tail).toBeNull();
       expect(linkedList.toString()).toBe('');
     });
 
     it('should return empty linked list given the linked list is empty', () => {
       const linkedList = new LinkedList();
-      expect(linkedList.head.toString()).toBe('');
-      expect(linkedList.tail.toString()).toBe('');
+      expect(linkedList.head).toBeNull();
+      expect(linkedList.tail).toBeNull();
       expect(linkedList.toString()).toBe('');
 
       linkedList.deleteHead();
-      expect(linkedList.head.toString()).toBe('');
-      expect(linkedList.tail.toString()).toBe('');
+      expect(linkedList.head).toBeNull();
+      expect(linkedList.tail).toBeNull();
       expect(linkedList.toString()).toBe('');
     });
   });
@@ -134,8 +134,8 @@ describe('LinkedList', () => {
       expect(linkedList.toString()).toBe('1');
 
       linkedList.delete(1);
-      expect(linkedList.head.toString()).toBe('');
-      expect(linkedList.tail.toString()).toBe('');
+      expect(linkedList.head).toBeNull();
+      expect(linkedList.tail).toBeNull();
       expect(linkedList.toString()).toBe('');
     });
 

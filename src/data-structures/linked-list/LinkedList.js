@@ -66,6 +66,8 @@ export default class LinkedList {
   }
 
   deleteHead() {
+    if (!this.head) return this;
+
     if (this.head.next) {
       this.head = this.head.next;
     } else {
