@@ -126,4 +126,26 @@ export default class LinkedList {
     }
     return null;
   }
+
+  deleteTail() {
+    const deleteNode = this.tail;
+
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+      return deleteNode;
+    }
+
+    let node = this.head;
+    while (node.next) {
+      if (!node.next.next) {
+        node.next = null;
+      } else {
+        node = node.next;
+      }
+    }
+    this.tail = node;
+
+    return deleteNode;
+  }
 }
