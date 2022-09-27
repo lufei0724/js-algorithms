@@ -4,7 +4,11 @@ export default class LinkedListNode {
     this.next = null;
   }
 
-  toString() {
-    return this.value.toString();
+  /**
+   * @param {function} [callback]
+   * @returns {string}
+   */
+  toString(callback) {
+    return callback ? callback(this.value) : this.value.toString();
   }
 }

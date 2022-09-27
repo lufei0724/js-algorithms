@@ -6,20 +6,40 @@ export default class LinkedList {
     this.tail = null;
   }
 
-  toString() {
-    return this.toArray().map((n) => n.toString()).join(',');
+  /**
+   * @param {function} [callback]
+   * @returns {string}
+   */
+  toString(callback) {
+    return this.toArray().map((n) => n.toString(callback)).toString();
   }
 
+  /**
+   * @param {*[]} values
+   * @returns {LinkedList}
+   */
+  fromArray(values) {
+    values.forEach((value) => this.append(value));
+    return this;
+  }
+
+  /**
+   * @return {LinkedListNode[]}
+   */
   toArray() {
     const arr = [];
     let node = this.head;
     while (node) {
-      arr.push(node.value);
+      arr.push(node);
       node = node.next;
     }
     return arr;
   }
 
+  /**
+   * @param {*} value
+   * @return {LinkedList}
+   */
   append(value) {
     const node = new LinkedListNode(value);
     if (!this.head) {
@@ -147,5 +167,25 @@ export default class LinkedList {
     this.tail = node;
 
     return deleteNode;
+  }
+
+  /**
+   * @returns {LinkedList}
+   */
+  reverse() {
+    let preNode = null;
+    let node = this.head;
+    let nextNode = null;
+    while (node) {
+      nextNode = node.next;
+
+      node.next = preNode;
+      preNode = node;
+
+      node = nextNode;
+    }
+    this.tail = this.head;
+    this.head = preNode;
+    return this;
   }
 }
